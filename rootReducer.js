@@ -1,13 +1,12 @@
 import { combineReducers } from 'redux';
-
-export const REQUEST = "REQUEST";
-export const RECEIVE = "RECEIVE";
+import {REQUEST, RECEIVE} from './actions';
 
 function posts(state = {
     isFetching: false,
     didRefresh: false,
     items: []
 }, action) {
+    console.log(action);
     switch (action.type) {
         case REQUEST:
             return Object.assign({}, state, {
@@ -17,7 +16,7 @@ function posts(state = {
             return Object.assign({}, state, {
                 didRefresh: true,
                 isFetching: false,
-                items: state.items.concat(action.posts)
+                items: action.items
             })
         default:
             return state;      
@@ -28,4 +27,4 @@ const rootReducer = combineReducers({
     posts
 });
   
-  export default rootReducer;
+export default rootReducer;

@@ -8,25 +8,64 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, FlatList} from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import {connect} from 'react-redux';
+import {fetchPosts, requestPosts} from './actions';
 
 type Props = {};
-export default class App extends Component<Props> {
+class App extends Component<Props> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: []
+    }
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    this.props.load();
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      data: props.items
+    })
+    console.log("will receive");
+  }
+
+  _renderItem(item) {
+    return (
+      <Text>{item.item.title}</Text>
+    )
+  }
+
   render() {
     return (
       <FlatList
-        data={[{key: 'a'}, {key: 'b'}]}
-        renderItem={({item}) => <Text>{item.key}</Text>}
+        data={this.state.data}
+        renderItem={this._renderItem}
+        keyExtractor={(item, index) => index.toString()}
       />
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log(state.posts);
+  return {
+    items: state.posts.items,
+    didRefresh: state.posts.didRefresh,
+    isFetching: state.posts.isFetching
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    load: () => dispatch(fetchPosts())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 const styles = StyleSheet.create({
   container: {
