@@ -10,6 +10,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import {fetchPosts, requestPosts} from './actions';
+import Item from './Item';
 
 type Props = {};
 class App extends Component<Props> {
@@ -35,7 +36,9 @@ class App extends Component<Props> {
 
   _renderItem(item) {
     return (
-      <Text>{item.item.title}</Text>
+      <Item
+        title={item.item.title}
+      />
     )
   }
 
