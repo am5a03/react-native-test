@@ -5,17 +5,16 @@ export default class Item extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        top: new Animated.Value(30)
+        top: new Animated.Value(1000)
     }
   }
 
   componentDidMount() {
     console.log(this.state);
-    Animated.timing(                  
+    Animated.spring(                  
         this.state.top,
         {
-          toValue: 0, 
-          duration: 500,
+          toValue: 0
         }
       ).start();
   }
